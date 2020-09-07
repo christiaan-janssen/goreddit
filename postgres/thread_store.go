@@ -12,6 +12,7 @@ type ThreadStore struct {
 	*sqlx.DB
 }
 
+// Thread returns a sinlge thread for a given id
 func (s *ThreadStore) Thread(id uuid.UUID) (goreddit.Thread, error) {
 	var t goreddit.Thread
 	if err := s.Get(&t, `SELECT * FROM threads WHERE id = $1`, id); err != nil {
@@ -20,6 +21,7 @@ func (s *ThreadStore) Thread(id uuid.UUID) (goreddit.Thread, error) {
 	return t, nil
 }
 
+// Threads returns all threads from the database
 func (s *ThreadStore) Threads() ([]goreddit.Thread, error) {
 	var tt []goreddit.Thread
 	if err := s.Select(&tt, `SELECT * from threads`); err != nil {
